@@ -1,44 +1,36 @@
-import 'package:expenses_tracker/widgets/user_transactions.dart';
+import 'package:expenses_tracker/widgets/main_screen_widget.dart';
 import 'package:flutter/material.dart';
 
-import 'models/transactions.dart';
 
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-
-  MyApp({super.key});
-
-   //List<Transactions> transactions;
+   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Expenses App'),
+      theme: ThemeData(
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+          titleLarge: const TextStyle(fontFamily: 'Quicksand',
+            color: Colors.black87,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            //mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                width: double.infinity,
-                child: const Card(
-                  color: Colors.white70,
-                  elevation: 5,
-                  child: Text('CHART!'),
-                ),
-              ),
-              const UserTransaction(),
-            ],
-          ),
-        ),
+        primarySwatch: Colors.amber,
+        appBarTheme: const AppBarTheme(titleTextStyle:
+        TextStyle(
+          fontFamily: 'Quicksand',
+          color: Colors.black87,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),),
       ),
+      home: const MainScreenWidget(),
     );
   }
 }

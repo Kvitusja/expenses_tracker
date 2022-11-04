@@ -24,9 +24,8 @@ class TransactionsList extends StatelessWidget {
                   margin: const EdgeInsets.all(10),
                   padding: const EdgeInsets.all(10),
                   child: Text(
-                    transactions[index].amount.toString(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20),
+                    transactions[index].amount.toStringAsFixed(2),
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
                 Column(
@@ -34,10 +33,7 @@ class TransactionsList extends StatelessWidget {
                   children: [
                     Text(
                       transactions[index].title,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Colors.black),
+                      style: Theme.of(context).textTheme.titleLarge,
                       textAlign: TextAlign.left,
                     ),
                     Text(
