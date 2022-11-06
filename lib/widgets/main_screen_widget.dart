@@ -1,3 +1,4 @@
+import 'package:expenses_tracker/widgets/chart.dart';
 import 'package:expenses_tracker/widgets/transactions_list.dart';
 import 'package:flutter/material.dart';
 import '../models/transactions.dart';
@@ -11,20 +12,30 @@ class MainScreenWidget extends StatefulWidget {
 }
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
-  final List<Transactions> userTransactions = [
-    Transactions(
-      id: 't1',
-      title: 'New shoes',
-      amount: 33.25,
-      date: DateTime.now(),
-    ),
-    Transactions(
-      id: 't2',
-      title: 'New books',
-      amount: 14.2,
-      date: DateTime.now(),
-    ),
+  final List<Transactions> _userTransactions = [
+    // Transactions(
+    //   id: 't1',
+    //   title: 'New shoes',
+    //   amount: 33.25,
+    //   date: DateTime.now(),
+    // ),
+    // Transactions(
+    //   id: 't2',
+    //   title: 'New books',
+    //   amount: 14.2,
+    //   date: DateTime.now(),
+    // ),
   ];
+
+  List<Transactions> get _recentTransactions {
+    return _userTransactions.where((element) {
+      return element.date.isAfter(
+        DateTime.now().subtract(
+          const Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
 
   void _addNewTransaction(String newTitle, double newAmount) {
     final newTransaction = Transactions(
@@ -35,7 +46,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     );
 
     setState(() {
-      userTransactions.add(newTransaction);
+      _userTransactions.add(newTransaction);
     });
   }
 
@@ -65,16 +76,9 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           //mainAxisAlignment: MainAxisAlignment.spaceAround,
           //crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              width: double.infinity,
-              child: const Card(
-                color: Colors.white70,
-                elevation: 5,
-                child: Text('CHART!'),
-              ),
-            ),
+            Chart(recentTransactions: _recentTransactions),
             TransactionsList(
-              transactions: userTransactions,
+              transactions: _userTransactions,
             ),
           ],
         ),
