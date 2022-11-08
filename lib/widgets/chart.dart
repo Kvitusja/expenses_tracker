@@ -11,16 +11,17 @@ class Chart extends StatelessWidget {
       );
 
       double totalSum = 0.0;
-      for (var i = 0; i <= recentTransactions.length; i++) {
+      for (var i = 0; i < recentTransactions.length; i++) {
         if (recentTransactions[i].date.day == weekDay.day &&
-            recentTransactions[i] == weekDay.month &&
-            recentTransactions[i] == weekDay.year) {
+            recentTransactions[i].date.month == weekDay.month &&
+            recentTransactions[i].date.year == weekDay.year) {
           totalSum += recentTransactions[i].amount;
         }
       }
       return {
-        'day': DateFormat.E().format(weekDay),
+        'day': DateFormat.E().format(weekDay).substring(0, 3),
         'amount': totalSum.toStringAsFixed(2),
+
       };
     });
   }
@@ -33,7 +34,7 @@ class Chart extends StatelessWidget {
       elevation: 6,
       margin: const EdgeInsets.all(20.0),
       child: Row(
-        children: [],
+        children: groupedTransactionValues.map((data) {return Text('${data['day']}:${data['amount']}');}).toList(),
       ),
     );
   }
