@@ -30,7 +30,7 @@ class ChartBar extends StatelessWidget {
           child: Stack(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey, width: 1),
                   color: const Color.fromRGBO(220, 220, 220, 1),

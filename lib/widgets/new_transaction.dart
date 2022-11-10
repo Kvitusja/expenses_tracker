@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addNewTransaction;
-  const NewTransaction({Key? key, required this.addNewTransaction}) : super(key: key);
+  const NewTransaction({Key? key, required this.addNewTransaction})
+      : super(key: key);
 
   @override
   State<NewTransaction> createState() => _NewTransactionState();
@@ -16,7 +17,7 @@ class _NewTransactionState extends State<NewTransaction> {
     final enteredTitle = titleController.text;
     final enteredAmount = double.parse(amountController.text);
 
-    if(enteredTitle.isEmpty || enteredAmount <= 0) {
+    if (enteredTitle.isEmpty || enteredAmount <= 0) {
       return;
     }
     widget.addNewTransaction(
@@ -42,18 +43,33 @@ class _NewTransactionState extends State<NewTransaction> {
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: 'Amount'),
               controller: amountController,
-              onSubmitted: (_)=> submitData,
+              onSubmitted: (_) => submitData,
+            ),
+            const SizedBox(
+              height: 10,
             ),
             Row(
-              children: const [
-                Text('No date chosen'),
-                ElevatedButton(onPressed: null, child: Text('Choose date'), ),
+              children: [
+                const Text('No date chosen'),
+                const SizedBox(
+                  width: 10,
+                ),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'Choose date',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ),
               ],
+            ),
+            const SizedBox(
+              height: 20,
             ),
             ElevatedButton(
               style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(Colors.blue),
-              ),
+                  //backgroundColor: MaterialStatePropertyAll(Colors.blue),
+                  ),
               onPressed: () {
                 widget.addNewTransaction(
                   titleController.text,
@@ -63,7 +79,7 @@ class _NewTransactionState extends State<NewTransaction> {
               },
               child: const Text(
                 'Add Transaction',
-                style: TextStyle(color: Colors.white),
+                //style: TextStyle(color: Colors.white),
               ),
             ),
           ],

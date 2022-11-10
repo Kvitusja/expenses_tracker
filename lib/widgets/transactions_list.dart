@@ -3,16 +3,21 @@ import 'package:intl/intl.dart';
 
 import '../models/transactions.dart';
 
-class TransactionsList extends StatelessWidget {
+class TransactionsList extends StatefulWidget {
   final List<Transactions> transactions;
   const TransactionsList({Key? key, required this.transactions})
       : super(key: key);
 
   @override
+  State<TransactionsList> createState() => _TransactionsListState();
+}
+
+class _TransactionsListState extends State<TransactionsList> {
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: 380,
-      child: transactions.isEmpty
+      child: widget.transactions.isEmpty
           ? Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               //crossAxisAlignment: CrossAxisAlignment.center,
@@ -32,10 +37,11 @@ class TransactionsList extends StatelessWidget {
               ],
             )
           : ListView.builder(
-              itemCount: transactions.length,
+              itemCount: widget.transactions.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                   elevation: 3,
                   child: ListTile(
                     leading: CircleAvatar(
@@ -43,16 +49,25 @@ class TransactionsList extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: FittedBox(
-                            child: Text('€ ${transactions[index].amount}')),
+                            child:
+                                Text('€ ${widget.transactions[index].amount}')),
                       ),
                     ),
                     title: Text(
-                      transactions[index].title,
+                      widget.transactions[index].title,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     subtitle: Text(
-                      DateFormat.yMMMd().format(transactions[index].date),
+                      DateFormat.yMMMd()
+                          .format(widget.transactions[index].date),
                     ),
+                    trailing: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            widget.transactions.removeAt(index);
+                          });
+                        },
+                        icon: const Icon(Icons.cancel_outlined)),
                   ),
                 );
                 /*Card(
