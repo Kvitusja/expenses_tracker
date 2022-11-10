@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addNewTransaction;
@@ -12,8 +13,8 @@ class NewTransaction extends StatefulWidget {
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
-
-  void submitData() {
+  DateTime? _selectedDate;
+  void _submitData() {
     final enteredTitle = titleController.text;
     final enteredAmount = double.parse(amountController.text);
 
@@ -24,6 +25,20 @@ class _NewTransactionState extends State<NewTransaction> {
       enteredTitle,
       enteredAmount,
     );
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2022),
+        lastDate: DateTime.now()).then((pickedDate) {
+          if(pickedDate == null){
+            return;
+          }else{
+            _selectedDate = pickedDate;
+          }
+    });
   }
 
   @override
@@ -43,22 +58,20 @@ class _NewTransactionState extends State<NewTransaction> {
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: 'Amount'),
               controller: amountController,
-              onSubmitted: (_) => submitData,
             ),
             const SizedBox(
               height: 10,
             ),
             Row(
               children: [
-                const Text('No date chosen'),
+                Text(_selectedDate == null ? 'No date chosen' : DateFormat.yMd().format(_selectedDate!)),
                 const SizedBox(
                   width: 10,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _presentDatePicker,
                   child: const Text(
                     'Choose date',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 ),
               ],
@@ -71,10 +84,11 @@ class _NewTransactionState extends State<NewTransaction> {
                   //backgroundColor: MaterialStatePropertyAll(Colors.blue),
                   ),
               onPressed: () {
-                widget.addNewTransaction(
-                  titleController.text,
-                  double.parse(amountController.text),
-                );
+                // widget.addNewTransaction(
+                //   titleController.text,
+                //   double.parse(amountController.text),
+                // );
+                _submitData();
                 Navigator.of(context).pop();
               },
               child: const Text(
