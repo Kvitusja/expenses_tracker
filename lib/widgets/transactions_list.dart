@@ -35,6 +35,27 @@ class TransactionsList extends StatelessWidget {
               itemCount: transactions.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                  elevation: 3,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 40,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: FittedBox(
+                            child: Text('€ ${transactions[index].amount}')),
+                      ),
+                    ),
+                    title: Text(
+                      transactions[index].title,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    subtitle: Text(
+                      DateFormat.yMMMd().format(transactions[index].date),
+                    ),
+                  ),
+                );
+                /*Card(
                   child: Row(
                     children: [
                       Container(
@@ -66,6 +87,7 @@ class TransactionsList extends StatelessWidget {
                     ],
                   ),
                 );
+                */
               },
             ),
     );

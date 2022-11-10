@@ -44,6 +44,12 @@ class _NewTransactionState extends State<NewTransaction> {
               controller: amountController,
               onSubmitted: (_)=> submitData,
             ),
+            Row(
+              children: const [
+                Text('No date chosen'),
+                ElevatedButton(onPressed: null, child: Text('Choose date'), ),
+              ],
+            ),
             ElevatedButton(
               style: const ButtonStyle(
                 backgroundColor: MaterialStatePropertyAll(Colors.blue),
