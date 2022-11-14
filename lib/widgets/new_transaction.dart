@@ -14,30 +14,38 @@ class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
   DateTime? _selectedDate;
+
   void _submitData() {
     final enteredTitle = titleController.text;
     final enteredAmount = double.parse(amountController.text);
 
-    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+    if(amountController.text.isEmpty){
+      return;
+    }
+
+    if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
       return;
     }
     widget.addNewTransaction(
       enteredTitle,
       enteredAmount,
+      _selectedDate
     );
   }
 
   void _presentDatePicker() {
     showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2022),
-        lastDate: DateTime.now()).then((pickedDate) {
-          if(pickedDate == null){
-            return;
-          }else{
-            _selectedDate = pickedDate;
-          }
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2022),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
     });
   }
 
@@ -63,10 +71,13 @@ class _NewTransactionState extends State<NewTransaction> {
               height: 10,
             ),
             Row(
+              //mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(_selectedDate == null ? 'No date chosen' : DateFormat.yMd().format(_selectedDate!)),
+                Text(_selectedDate == null
+                    ? 'No date chosen'
+                    : DateFormat.yMd().format(_selectedDate!)),
                 const SizedBox(
-                  width: 10,
+                  width: 7,
                 ),
                 ElevatedButton(
                   onPressed: _presentDatePicker,
@@ -74,28 +85,40 @@ class _NewTransactionState extends State<NewTransaction> {
                     'Choose date',
                   ),
                 ),
+                const SizedBox(
+                  width: 7,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _submitData();
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'Add Transaction',
+                  ),
+                ),
               ],
             ),
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(
-              style: const ButtonStyle(
-                  //backgroundColor: MaterialStatePropertyAll(Colors.blue),
-                  ),
-              onPressed: () {
-                // widget.addNewTransaction(
-                //   titleController.text,
-                //   double.parse(amountController.text),
-                // );
-                _submitData();
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'Add Transaction',
-                //style: TextStyle(color: Colors.white),
-              ),
-            ),
+            // ElevatedButton(
+            //   style: const ButtonStyle(
+            //       //backgroundColor: MaterialStatePropertyAll(Colors.blue),
+            //       ),
+            //   onPressed: () {
+            //     // widget.addNewTransaction(
+            //     //   titleController.text,
+            //     //   double.parse(amountController.text),
+            //     // );
+            //     _submitData();
+            //     Navigator.of(context).pop();
+            //   },
+            //   child: const Text(
+            //     'Add Transaction',
+            //     //style: TextStyle(color: Colors.white),
+            //   ),
+            // ),
           ],
         ),
       ),

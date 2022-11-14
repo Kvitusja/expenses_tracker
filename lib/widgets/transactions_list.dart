@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 import '../models/transactions.dart';
 
 class TransactionsList extends StatefulWidget {
+  final Function deleteTransaction;
   final List<Transactions> transactions;
-  const TransactionsList({Key? key, required this.transactions})
+  const TransactionsList({Key? key, required this.transactions, required this.deleteTransaction})
       : super(key: key);
 
   @override
@@ -20,7 +21,6 @@ class _TransactionsListState extends State<TransactionsList> {
       child: widget.transactions.isEmpty
           ? Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   'No transactions',
@@ -62,47 +62,10 @@ class _TransactionsListState extends State<TransactionsList> {
                           .format(widget.transactions[index].date),
                     ),
                     trailing: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            widget.transactions.removeAt(index);
-                          });
-                        },
+                        onPressed: () => widget.deleteTransaction(widget.transactions[index].id),
                         icon: const Icon(Icons.cancel_outlined)),
                   ),
                 );
-                /*Card(
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.black87, width: 2)),
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          transactions[index].amount.toStringAsFixed(2),
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            transactions[index].title,
-                            style: Theme.of(context).textTheme.titleLarge,
-                            textAlign: TextAlign.left,
-                          ),
-                          Text(
-                            DateFormat.yMMMMd()
-                                .format(transactions[index].date),
-                            style: const TextStyle(color: Colors.black54),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-                */
               },
             ),
     );

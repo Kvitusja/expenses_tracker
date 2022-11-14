@@ -37,11 +37,12 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     }).toList();
   }
 
-  void _addNewTransaction(String newTitle, double newAmount) {
+  void _addNewTransaction(
+      String newTitle, double newAmount, DateTime selectedDate) {
     final newTransaction = Transactions(
       title: newTitle,
       amount: newAmount,
-      date: DateTime.now(),
+      date: selectedDate,
       id: DateTime.now().toString(),
     );
 
@@ -57,6 +58,12 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         return NewTransaction(addNewTransaction: _addNewTransaction);
       },
     );
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((transaction) => transaction.id == id);
+    });
   }
 
   @override
@@ -79,7 +86,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             Chart(recentTransactions: _recentTransactions),
             TransactionsList(
               transactions: _userTransactions,
-            ),
+              deleteTransaction: _deleteTransaction),
           ],
         ),
       ),
