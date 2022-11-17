@@ -27,6 +27,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     // ),
   ];
 
+  bool _showChart = false;
+
   List<Transactions> get _recentTransactions {
     return _userTransactions.where((element) {
       return element.date.isAfter(
@@ -68,25 +70,50 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: const Text('Expenses App'),
+      actions: [
+        IconButton(
+          onPressed: () => _startAddNewTransaction(context),
+          icon: const Icon(Icons.add),
+        ),
+      ],
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Expenses App'),
-        actions: [
-          IconButton(
-            onPressed: () => _startAddNewTransaction(context),
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
-          //mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(recentTransactions: _recentTransactions),
-            TransactionsList(
-              transactions: _userTransactions,
-              deleteTransaction: _deleteTransaction),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Show chart'),
+                Switch(
+                    value: _showChart,
+                    onChanged: (newValue){
+                      setState(() {
+                        _showChart = newValue;
+                      });
+                }),
+              ],
+            ),
+            _showChart ? SizedBox(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.25,
+              child: Chart(recentTransactions: _recentTransactions),
+            ) :
+            SizedBox(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.75,
+              child: TransactionsList(
+                  transactions: _userTransactions,
+                  deleteTransaction: _deleteTransaction),
+            ),
           ],
         ),
       ),

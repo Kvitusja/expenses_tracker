@@ -102,23 +102,6 @@ class _NewTransactionState extends State<NewTransaction> {
             const SizedBox(
               height: 20,
             ),
-            // ElevatedButton(
-            //   style: const ButtonStyle(
-            //       //backgroundColor: MaterialStatePropertyAll(Colors.blue),
-            //       ),
-            //   onPressed: () {
-            //     // widget.addNewTransaction(
-            //     //   titleController.text,
-            //     //   double.parse(amountController.text),
-            //     // );
-            //     _submitData();
-            //     Navigator.of(context).pop();
-            //   },
-            //   child: const Text(
-            //     'Add Transaction',
-            //     //style: TextStyle(color: Colors.white),
-            //   ),
-            // ),
           ],
         ),
       ),

@@ -17,7 +17,7 @@ class _TransactionsListState extends State<TransactionsList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 380,
+      //height: 500,
       child: widget.transactions.isEmpty
           ? Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
