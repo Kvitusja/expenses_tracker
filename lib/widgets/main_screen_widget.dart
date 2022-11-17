@@ -85,35 +85,56 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Show chart'),
-                Switch(
-                    value: _showChart,
-                    onChanged: (newValue){
-                      setState(() {
-                        _showChart = newValue;
-                      });
-                }),
-              ],
-            ),
-            _showChart ? SizedBox(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.25,
-              child: Chart(recentTransactions: _recentTransactions),
-            ) :
             SizedBox(
               height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.75,
-              child: TransactionsList(
-                  transactions: _userTransactions,
-                  deleteTransaction: _deleteTransaction),
+                  appBar.preferredSize.height -
+                  MediaQuery.of(context).padding.top) *
+                  0.05,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Show chart'),
+                  Switch(
+                      value: _showChart,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _showChart = newValue;
+                        });
+                      }),
+                ],
+              ),
             ),
+            _showChart
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.25,
+                        child: Chart(recentTransactions: _recentTransactions),
+                      ),
+                      SizedBox(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.7,
+                        child: TransactionsList(
+                            transactions: _userTransactions,
+                            deleteTransaction: _deleteTransaction),
+                      ),
+                    ],
+                  )
+                : SizedBox(
+                    height: (MediaQuery.of(context).size.height -
+                            appBar.preferredSize.height -
+                            MediaQuery.of(context).padding.top) *
+                        0.75,
+                    child: TransactionsList(
+                        transactions: _userTransactions,
+                        deleteTransaction: _deleteTransaction),
+                  ),
           ],
         ),
       ),

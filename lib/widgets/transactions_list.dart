@@ -6,7 +6,8 @@ import '../models/transactions.dart';
 class TransactionsList extends StatefulWidget {
   final Function deleteTransaction;
   final List<Transactions> transactions;
-  const TransactionsList({Key? key, required this.transactions, required this.deleteTransaction})
+  const TransactionsList(
+      {Key? key, required this.transactions, required this.deleteTransaction})
       : super(key: key);
 
   @override
@@ -19,23 +20,24 @@ class _TransactionsListState extends State<TransactionsList> {
     return Container(
       //height: 500,
       child: widget.transactions.isEmpty
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  'No transactions',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(
-                  height: 100,
-                ),
-                SizedBox(
-                  height: 250,
-                  width: 300,
-                  child: Image.asset('assets/images/money.png'),
-                ),
-              ],
-            )
+          ? LayoutBuilder(builder: (context, constraints) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    'No transactions',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  SizedBox(
+                    height: constraints.maxHeight * 0.6,
+                    child: Image.asset('assets/images/money.png'),
+                  ),
+                ],
+              );
+            })
           : ListView.builder(
               itemCount: widget.transactions.length,
               itemBuilder: (BuildContext context, int index) {
@@ -62,7 +64,8 @@ class _TransactionsListState extends State<TransactionsList> {
                           .format(widget.transactions[index].date),
                     ),
                     trailing: IconButton(
-                        onPressed: () => widget.deleteTransaction(widget.transactions[index].id),
+                        onPressed: () => widget
+                            .deleteTransaction(widget.transactions[index].id),
                         icon: const Icon(Icons.cancel_outlined)),
                   ),
                 );
