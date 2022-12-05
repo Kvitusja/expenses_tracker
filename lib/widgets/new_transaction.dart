@@ -31,6 +31,8 @@ class _NewTransactionState extends State<NewTransaction> {
       enteredAmount,
       _selectedDate
     );
+
+    Navigator.of(context).pop();
   }
 
   void _presentDatePicker() {
@@ -51,59 +53,61 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(labelText: 'Title'),
-              controller: titleController,
-            ),
-            TextField(
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'Amount'),
-              controller: amountController,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return SingleChildScrollView(
+      child: Card(
+          child: Container(
+            padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(_selectedDate == null
-                    ? 'No date chosen'
-                    : DateFormat.yMd().format(_selectedDate!)),
-                const SizedBox(
-                  width: 7,
+                TextField(
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(labelText: 'Title'),
+                  controller: titleController,
                 ),
-                ElevatedButton(
-                  onPressed: _presentDatePicker,
-                  child: const Text(
-                    'Choose date',
-                  ),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(labelText: 'Amount'),
+                  controller: amountController,
                 ),
                 const SizedBox(
-                  width: 7,
+                  height: 10,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    _submitData();
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    'Add Transaction',
-                  ),
+                Row(
+                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(_selectedDate == null
+                        ? 'No date chosen'
+                        : DateFormat.yMd().format(_selectedDate!)),
+                    const SizedBox(
+                      width: 7,
+                    ),
+                    ElevatedButton(
+                      onPressed: _presentDatePicker,
+                      child: const Text(
+                        'Choose date',
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 7,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _submitData();
+                       //Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        'Add Transaction',
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
-        ),
+          ),
       ),
     );
   }

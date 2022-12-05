@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '../models/transactions.dart';
 
-class TransactionsList extends StatefulWidget {
+class TransactionsList extends StatelessWidget {
   final Function deleteTransaction;
   final List<Transactions> transactions;
   const TransactionsList(
@@ -11,25 +10,20 @@ class TransactionsList extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<TransactionsList> createState() => _TransactionsListState();
-}
-
-class _TransactionsListState extends State<TransactionsList> {
-  @override
   Widget build(BuildContext context) {
     return Container(
       //height: 500,
-      child: widget.transactions.isEmpty
+      child: transactions.isEmpty
           ? LayoutBuilder(builder: (context, constraints) {
               return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                //mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
                     'No transactions',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(
-                    height: 100,
+                    height: 20,
                   ),
                   SizedBox(
                     height: constraints.maxHeight * 0.6,
@@ -39,7 +33,7 @@ class _TransactionsListState extends State<TransactionsList> {
               );
             })
           : ListView.builder(
-              itemCount: widget.transactions.length,
+              itemCount: transactions.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                   margin:
@@ -49,24 +43,33 @@ class _TransactionsListState extends State<TransactionsList> {
                     leading: CircleAvatar(
                       radius: 40,
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(6.0),
                         child: FittedBox(
-                            child:
-                                Text('€ ${widget.transactions[index].amount}')),
+                            child: Text('€ ${transactions[index].amount}')),
                       ),
                     ),
                     title: Text(
-                      widget.transactions[index].title,
+                      transactions[index].title,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     subtitle: Text(
-                      DateFormat.yMMMd()
-                          .format(widget.transactions[index].date),
+                      DateFormat.yMMMd().format(transactions[index].date),
                     ),
-                    trailing: IconButton(
-                        onPressed: () => widget
-                            .deleteTransaction(widget.transactions[index].id),
-                        icon: const Icon(Icons.cancel_outlined)),
+                    trailing: MediaQuery.of(context).size.width > 400
+                        ? TextButton(
+                            onPressed: () =>
+                                deleteTransaction(transactions[index].id),
+                            child: Column(
+                              children: const [
+                                Icon(Icons.cancel_outlined, color: Colors.grey,),
+                                Text('Delete', style: TextStyle(color: Colors.orange),),
+                              ],
+                            ),
+                          )
+                        : IconButton(
+                            onPressed: () =>
+                                deleteTransaction(transactions[index].id),
+                            icon: const Icon(Icons.cancel_outlined)),
                   ),
                 );
               },

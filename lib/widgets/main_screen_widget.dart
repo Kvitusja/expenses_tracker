@@ -68,8 +68,57 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     });
   }
 
+  List<Widget> _buildLandscapePage(
+      MediaQueryData mediaQuery, AppBar appBar, Widget transactionsListWidget) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text('Show Chart'),
+          Switch(
+            value: _showChart,
+            onChanged: (val) {
+              setState(() {
+                _showChart = val;
+              });
+            },
+          ),
+        ],
+      ),
+      _showChart
+          ? SizedBox(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+              child: Chart(
+                recentTransactions: _recentTransactions,
+              ),
+            )
+          : transactionsListWidget
+    ];
+  }
+
+  List<Widget> _buildPortraitPage(
+      MediaQueryData mediaQuery, AppBar appBar, Widget transactionListWidget) {
+    return [
+      SizedBox(
+        height: (mediaQuery.size.height -
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
+            0.3,
+        child: Chart(
+          recentTransactions: _recentTransactions,
+        ),
+      ),
+      transactionListWidget,
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
     final appBar = AppBar(
       title: const Text('Expenses App'),
       actions: [
@@ -79,68 +128,34 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         ),
       ],
     );
+    final transactionsListWidget = Container(
+      height: (mediaQuery.size.height -
+              appBar.preferredSize.height -
+              mediaQuery.padding.top) *
+          0.7,
+      child: TransactionsList(
+          transactions: _userTransactions,
+          deleteTransaction: _deleteTransaction),
+    );
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
+          // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: (MediaQuery.of(context).size.height -
-                  appBar.preferredSize.height -
-                  MediaQuery.of(context).padding.top) *
-                  0.05,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Show chart'),
-                  Switch(
-                      value: _showChart,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _showChart = newValue;
-                        });
-                      }),
-                ],
-              ),
-            ),
-            _showChart
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.25,
-                        child: Chart(recentTransactions: _recentTransactions),
-                      ),
-                      SizedBox(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.7,
-                        child: TransactionsList(
-                            transactions: _userTransactions,
-                            deleteTransaction: _deleteTransaction),
-                      ),
-                    ],
-                  )
-                : SizedBox(
-                    height: (MediaQuery.of(context).size.height -
-                            appBar.preferredSize.height -
-                            MediaQuery.of(context).padding.top) *
-                        0.75,
-                    child: TransactionsList(
-                        transactions: _userTransactions,
-                        deleteTransaction: _deleteTransaction),
-                  ),
+          children: <Widget>[
+            if (isLandscape)
+              ..._buildLandscapePage(
+                  mediaQuery, appBar, transactionsListWidget),
+            if (!isLandscape)
+              ..._buildPortraitPage(mediaQuery, appBar, transactionsListWidget),
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _startAddNewTransaction(context),
         child: const Icon(Icons.add),
+        onPressed: () => _startAddNewTransaction(context),
       ),
     );
   }
